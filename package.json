@@ -1,0 +1,31 @@
+{
+  "name": "etherscan-mcp-for-dev",
+  "version": "0.1.0",
+  "description": "An xmcp application with tool syntax",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "xmcp build",
+    "dev": "xmcp dev",
+    "start": "node dist/stdio.js",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,mdx}\" --cache",
+    "format:write": "prettier --write \"**/*.{ts,tsx,js,jsx,mdx}\" --cache"
+  },
+  "dependencies": {
+    "viem": "^2.37.2",
+    "xmcp": "0.1.13",
+    "zod": "3.24.4"
+  },
+  "devDependencies": {
+    "prettier": "3.6.2",
+    "swc-loader": "^0.2.6"
+  },
+  "main": "./dist/stdio.js",
+  "files": [
+    "dist"
+  ],
+  "bin": {
+    "etherscan-mcp-for-dev": "./dist/stdio.js"
+  }
+}
