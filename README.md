@@ -1,107 +1,170 @@
-# xmcp Application
+# Etherscan MCP Server for Developer
 
-This project was created with [create-xmcp-app](https://github.com/basementstudio/xmcp).
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Built with xmcp](https://img.shields.io/badge/Built%20with-xmcp-blue.svg)](https://xmcp.dev)
 
-## Getting Started
+A powerful Model Context Protocol (MCP) server that brings Etherscan's blockchain data directly to your AI tools like Claude Code and Cursor! 🚀
 
-First, run the development server:
+## Overview 🌟
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+This MCP server is **specifically designed for dApp and smart contract developers**! 👨‍💻 It supercharges your AI assistant with essential blockchain development tools by providing direct access to Etherscan's data:
+
+- 📄 **Smart Contract ABIs** - Fetch contract interfaces instantly for integration
+- 🔍 **Contract Details** - Get comprehensive contract information including source code
+- 🌐 **Multi-Chain Support** - Works across all major EVM networks
+
+**Optimized for developers:** Only includes the most essential tools to keep context consumption small
+
+Built with the awesome [xmcp framework](https://xmcp.dev/) for maximum developer happiness! ✨
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v20 or higher)
+- pnpm
+- An Etherscan API key (get yours at [etherscan.io](https://etherscan.io/apis))
+
+### Installation & Setup
+
+1. **Clone and Install**
+   ```bash
+   git clone <your-repo-url>
+   cd etherscan-mcp-for-dev
+   pnpm install
+   ```
+
+2. **Development Server**
+   ```bash
+   pnpm dev
+   ```
+
+   This fires up the MCP server with hot reloading! 🔥
+
+3. **Build for Production**
+   ```bash
+   pnpm build
+   ```
+
+## 🏗️ Project Structure
+
+This project follows the xmcp structured approach where tools live in the `src/tools` directory and are automatically discovered:
+
+```
+src/
+├── tools/
+│   ├── getContractAbi.ts        # 📋 Fetch contract ABIs
+│   ├── getContractDetail.ts     # 🔍 Get detailed contract info
+│   └── getSupportedChains.ts    # 🌐 List supported chains
+└── ...
 ```
 
-This will start the MCP server with the selected transport method.
-
-## Project Structure
-
-This project uses the structured approach where tools are automatically discovered from the `src/tools` directory. Each tool is defined in its own file with the following structure:
+Each tool follows this pattern:
 
 ```typescript
 import { z } from "zod";
 import { type InferSchema } from "xmcp";
 
-// Define the schema for tool parameters
+// 📝 Define parameters with Zod validation
 export const schema = {
-  a: z.number().describe("First number to add"),
-  b: z.number().describe("Second number to add"),
+  address: z.string().describe("Contract address"),
+  chain: z.string().describe("Chain name or ID"),
 };
 
-// Define tool metadata
+// 🏷️ Tool metadata
 export const metadata = {
-  name: "add",
-  description: "Add two numbers together",
+  name: "getContractAbi",
+  description: "Fetch smart contract ABI from Etherscan",
   annotations: {
-    title: "Add Two Numbers",
+    title: "Get Contract ABI",
     readOnlyHint: true,
     destructiveHint: false,
     idempotentHint: true,
   },
 };
 
-// Tool implementation
-export default async function add({ a, b }: InferSchema<typeof schema>) {
+// ⚡ Implementation
+export default async function getContractAbi({ address, chain }: InferSchema<typeof schema>) {
+  // Your awesome logic here!
   return {
-    content: [{ type: "text", text: String(a + b) }],
+    content: [{ type: "text", text: "Contract ABI data..." }],
   };
 }
 ```
 
-## Adding New Tools
+## 🛠️ Available Tools
 
-To add a new tool:
+### `getContractAbi` 📋
+Fetches the Application Binary Interface (ABI) for any verified smart contract.
 
-1. Create a new `.ts` file in the `src/tools` directory
-2. Export a `schema` object defining the tool parameters using Zod
-3. Export a `metadata` object with tool information
-4. Export a default function that implements the tool logic
+**Example Claude query:**
+> "Can you get the ABI for the 0xdac17f958d2ee523a2206206994597c13d831ec7 on ethereum?"
 
-## Building for Production
+### `getContractDetail` 🔍
+Retrieves comprehensive contract information including source code, compiler version, and proxy details.
 
-To build your project for production:
+**Example Claude query:**
+> "Show me the source code for contract 0xdac17f958d2ee523a2206206994597c13d831ec7 on ethereum"
 
+### `getSupportedChains` 🌐
+Lists all supported blockchain networks and their chain IDs.
+
+**Example Claude query:**
+> "What blockchains does etherscan support?"
+
+## 🏃‍♂️ Running the Server
+
+### Development
 ```bash
-npm run build
-# or
-yarn build
-# or
+pnpm dev  # Hot reloading goodness ⚡
+```
+
+### Production
+```bash
+# Build first
 pnpm build
+
+# Then run with STDIO transport:
+pnpm start
 ```
 
-This will compile your TypeScript code and output it to the `dist` directory.
 
-## Running the Server
+## 🔧 Integration with Claude Desktop
 
-You can run the server for the transport built with:
+Add this server to Claude Desktop for blockchain superpowers:
 
-- HTTP: `node dist/http.js`
-- STDIO: `node dist/stdio.js`
+1. **Open Claude Desktop config:**
+   - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+   - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+   - Linux: `~/.config/Claude/claude_desktop_config.json`
 
-Given the selected transport method, you will have a custom start script added to the `package.json` file.
+2. **Add configuration:**
+   ```json
+   {
+     "mcpServers": {
+       "etherscan-mcp": {
+         "command": "node",
+         "args": ["/path/to/your/dist/stdio.js"],
+         "env": {
+           "ETHERSCAN_API_KEY": "your_api_key_here"
+         }
+       }
+     }
+   }
+   ```
 
-For HTTP:
+3. **Restart Claude Desktop** and start exploring the blockchain! 🚀
 
-```bash
-npm run start-http
-# or
-yarn start-http
-# or
-pnpm start-http
-```
+## 📚 Learn More
 
-For STDIO:
+- [xmcp Documentation](https://xmcp.dev/docs) - Framework docs
+- [MCP Specification](https://modelcontextprotocol.io/) - Protocol details
+- [Etherscan API](https://docs.etherscan.io/) - Data source docs
 
-```bash
-npm run start-stdio
-# or
-yarn start-stdio
-# or
-pnpm start-stdio
-```
+## 📄 License
 
-## Learn More
+MIT License - see [LICENSE](LICENSE) for details.
 
-- [xmcp Documentation](https://xmcp.dev/docs)
+---
+
+**Built with ❤️ using [xmcp](https://xmcp.dev/)**
