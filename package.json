@@ -1,6 +1,6 @@
 {
   "name": "etherscan-mcp-for-dev",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "An etherscan mcp made for developer",
   "engines": {
     "node": ">=20.0.0"
