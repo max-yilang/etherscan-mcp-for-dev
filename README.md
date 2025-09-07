@@ -129,22 +129,22 @@ pnpm start
 ```
 
 
-## 🔧 Integration with Claude Desktop
+## 🔧 Integration with AI Tools
 
-Add this server to Claude Desktop for blockchain superpowers:
+1. **Open Your AI Tools MCP configuration file:**
+   - Cursor: `~/.cursor/mcp.json`
+   - Windsurf: `~/.codeium/windsurf/mcp_config.json`
+   - Cline: `~/.cline/mcp_config.json`
+   - Claude: `~/.claude/mcp_config.json`
 
-1. **Open Claude Desktop config:**
-   - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
-   - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
-   - Linux: `~/.config/Claude/claude_desktop_config.json`
 
 2. **Add configuration:**
    ```json
    {
      "mcpServers": {
        "etherscan-mcp": {
-         "command": "node",
-         "args": ["/path/to/your/dist/stdio.js"],
+         "command": "npx",
+         "args": ["-y", "etherscan-mcp-for-dev@latest"],
          "env": {
            "ETHERSCAN_API_KEY": "your_api_key_here"
          }
@@ -152,8 +152,6 @@ Add this server to Claude Desktop for blockchain superpowers:
      }
    }
    ```
-
-3. **Restart Claude Desktop** and start exploring the blockchain! 🚀
 
 ## 📚 Learn More
 
